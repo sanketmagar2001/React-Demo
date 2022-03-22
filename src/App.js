@@ -1,25 +1,36 @@
-import logo from './logo.svg';
 import './App.css';
+import Login from "./Pages/login";
+import ToDo from "./Pages/todo";
+import { BrowserRouter, Navigate } from 'react-router-dom';
+import { useState } from 'react';
+import { Routes,Route } from 'react-router-dom';
 
-function App() {
+const  App = () =>{
+
+  const [user,setUser] = useState(null);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+        <Routes>
+          {!user && (
+              <Route
+              path="/login"
+              element={<Login authenticate={()=>setUser(true)} />}
+              />
+          )}
+          {user && (
+              <Route
+              path="/todo"
+              element={<ToDo/>}
+              />
+          )}
+          <Route
+            path="*"
+            element={<Navigate to={user ? "/todo" : "/login" } />}
+          />
+        </Routes>
+    </BrowserRouter>
   );
-}
+};
 
 export default App;
